@@ -14,19 +14,11 @@
 
     <!-- Search Form -->
 <form action="{{ route('students.index') }}" method="GET" class="mb-4 flex gap-2">
-    <input 
-        type="text" 
-        name="search" 
-        value="{{ $search ?? '' }}" 
-        placeholder="Search by name..." 
-        class="border border-gray-300 rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
-    >
-    <button 
-        type="submit" 
-        class="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700 transition duration-200"
-    >
-        Search
-    </button>
+    <input type="text" name="search" value="{{ request('search')}}" placeholder="Search by ID name course  registration number...." 
+        class="border border-gray-300 rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400">
+        
+    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700 transition duration-200"
+    >Search</button>
 </form>
 
     <!-- Table Container -->
@@ -80,13 +72,16 @@
                                     {{-- view student button --}}
                                     <a href="{{ route('students.show', $student->id) }}" class="bg-blue-500 text-white px-3 py-1 rounded shadow hover:bg-blue-600 transition duration-200">View</a>
                                     
-                                    {{-- videlette student button --}}
+                                    {{-- delete student button --}}
 
                                 <form action="{{ route('students.destroy', $student->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded shadow hover:bg-red-600 transition duration-200">Delete</button>
                                 </form>
+                               
+
+
                             </td>
                         </tr>
                     @empty

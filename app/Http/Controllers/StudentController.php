@@ -13,24 +13,24 @@ class StudentController extends Controller
 
     public function index(Request $request)
     {
-        // get  input  user typed
-        $search = $request->input('search');
-
+        $search = $request->input('search'); //grabs request of input u typed
         $perPage = 5;
 
-        // quering the students model
-        $students = Student::when($search, function ($query, $search) {
-            // add search filter only if user typed something
-            $query->where('name', 'like', '%' . $search . '%');
-        })
-            ->orderBy('created_at', 'desc') // Newest first
-            ->paginate($perPage)           // Paginate results
-            ->withQueryString();           // Keep search term in URL
+        $students = Student::query() //start quering student table
+            ->when($search, function ($query) use ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('id', $search)
+                        ->orWhere('name', 'like', "%{$search}%")
+                        ->orWhere('course', 'like', "%{$search}%")
+                        ->orWhere('registration_number', 'like', "%{$search}%");
+                });
+            })
+            ->orderByDesc('created_at')
+            ->paginate($perPage)
+            ->withQueryString(); //keep the search word in the URL when you click next page
 
         return view('students.index', compact('students', 'search'));
     }
-
-
 
     /**
      * Show the form for creating a new resource.
@@ -92,7 +92,7 @@ class StudentController extends Controller
      */
     public function update(Request $request, Student $student)
     {
-        // 1️⃣ Validate the request
+        // 1. Validate the request
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
@@ -102,7 +102,7 @@ class StudentController extends Controller
             'photo' => 'nullable|image|max:2048', // optional photo
         ]);
 
-        // 2️⃣ Handle photo upload if there is a new photo
+        // 2. Handle photo upload if there is a new photo
         if ($request->hasFile('photo')) {
             // Delete old photo if exists
             if ($student->photo && file_exists(storage_path('app/public/' . $student->photo))) {
@@ -113,10 +113,10 @@ class StudentController extends Controller
             $validated['photo'] = $path;
         }
 
-        // 3️⃣ Update student
+        // 3. Update student
         $student->update($validated);
 
-        // 4️⃣ Redirect back to index or show page
+        // 4. Redirect back to index or show page
         return redirect()->route('students.index')->with('success', 'Student updated successfully!');
     }
 
