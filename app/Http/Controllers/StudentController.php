@@ -10,11 +10,27 @@ class StudentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+
+    public function index(Request $request)
     {
-        $students = Student::all(); // Fetch all students
-        return view('students.index', compact('students'));
+        // get  input  user typed
+        $search = $request->input('search');
+
+        $perPage = 5;
+
+        // quering the students model
+        $students = Student::when($search, function ($query, $search) {
+            // add search filter only if user typed something
+            $query->where('name', 'like', '%' . $search . '%');
+        })
+            ->orderBy('created_at', 'desc') // Newest first
+            ->paginate($perPage)           // Paginate results
+            ->withQueryString();           // Keep search term in URL
+
+        return view('students.index', compact('students', 'search'));
     }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -110,6 +126,8 @@ class StudentController extends Controller
      */
     public function destroy(Student $student)
     {
-        //
+        $student->delete(); //delete a record
+        return redirect()->route('students.index')
+            ->with('success', 'Student deleted successfully.');
     }
 }
