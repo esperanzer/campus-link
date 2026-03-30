@@ -14,8 +14,11 @@
 
     <!-- Search Form -->
 <form action="{{ route('students.index') }}" method="GET" class="mb-4 flex gap-2">
-    <input type="text" name="search" value="{{ request('search')}}" placeholder="Search by ID name course  registration number...." 
-        class="border border-gray-300 rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400">
+    <input type="text" name="search" 
+    value="{{ request('search')}}"
+     placeholder="Search by ID name course  registration number...." 
+    class="border border-gray-300 rounded px-4 py-2 w-full focus:outline-none focus:ring-2 
+    focus:ring-blue-400">
         
     <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700 transition duration-200"
     >Search</button>

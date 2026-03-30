@@ -13,7 +13,7 @@ class StudentController extends Controller
 
     public function index(Request $request)
     {
-        $search = $request->input('search'); //grabs request of input u typed
+        $search = $request->input('search'); //grabs search request from user en put it in  for blade reuse
         $perPage = 5;
 
         $students = Student::query() //start quering student table
