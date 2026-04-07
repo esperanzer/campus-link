@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CampusLink - @yield('title')</title>
+    <title>CampusLink - <?php echo $__env->yieldContent('title'); ?></title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50 min-h-screen flex flex-col">
@@ -13,25 +13,25 @@
         <div class="text-2xl font-bold tracking-wide">CampusLink</div>
         <nav class="space-x-4 flex items-center">
             <a href="/" class="hover:underline hover:text-yellow-300 transition">Dashboard</a>
-            <a href="{{ route('students.index') }}" class="hover:underline hover:text-yellow-300 transition">Students</a>
+            <a href="<?php echo e(route('students.index')); ?>" class="hover:underline hover:text-yellow-300 transition">Students</a>
             <a href="#" class="hover:underline hover:text-yellow-300 transition">Courses</a>
             <a href="#" class="hover:underline hover:text-yellow-300 transition">Lecturers</a>
 
-            @auth
-                <span class="text-yellow-200 font-semibold">Hi, {{ Auth::user()->name }}!</span>
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
+            <?php if(auth()->guard()->check()): ?>
+                <span class="text-yellow-200 font-semibold">Hi, <?php echo e(Auth::user()->name); ?>!</span>
+                <form method="POST" action="<?php echo e(route('logout')); ?>">
+                    <?php echo csrf_field(); ?>
                     <button type="submit" class="bg-white text-teal-600 px-3 py-1 rounded hover:bg-yellow-300 hover:text-teal-800 transition font-semibold">
                         Logout
                     </button>
                 </form>
-            @endauth
+            <?php endif; ?>
 
-            @guest
-                <a href="{{ route('login') }}" class="bg-white text-teal-600 px-3 py-1 rounded hover:bg-yellow-300 transition font-semibold">
+            <?php if(auth()->guard()->guest()): ?>
+                <a href="<?php echo e(route('login')); ?>" class="bg-white text-teal-600 px-3 py-1 rounded hover:bg-yellow-300 transition font-semibold">
                     Login
                 </a>
-            @endguest
+            <?php endif; ?>
         </nav>
     </header>
 
@@ -41,7 +41,7 @@
             <h2 class="font-semibold mb-4 text-gray-700 text-lg">Navigation</h2>
             <ul class="space-y-3">
                 <li><a href="/" class="block px-3 py-2 rounded hover:bg-teal-200 hover:text-teal-800 transition">Dashboard</a></li>
-                <li><a href="{{ route('students.index') }}" class="block px-3 py-2 rounded hover:bg-teal-200 hover:text-teal-800 transition">Students</a></li>
+                <li><a href="<?php echo e(route('students.index')); ?>" class="block px-3 py-2 rounded hover:bg-teal-200 hover:text-teal-800 transition">Students</a></li>
                 <li><a href="#" class="block px-3 py-2 rounded hover:bg-teal-200 hover:text-teal-800 transition">Courses</a></li>
                 <li><a href="#" class="block px-3 py-2 rounded hover:bg-teal-200 hover:text-teal-800 transition">Lecturers</a></li>
             </ul>
@@ -50,26 +50,28 @@
         <!-- Main Content Area -->
         <main class="flex-1 p-6">
 
-            @if(session('success'))
+            <?php if(session('success')): ?>
                 <div class="bg-green-100 text-green-800 px-4 py-2 rounded mb-4 shadow">
-                    {{ session('success') }}
-                </div>
-            @endif
+                    <?php echo e(session('success')); ?>
 
-            @if(session('error'))
+                </div>
+            <?php endif; ?>
+
+            <?php if(session('error')): ?>
                 <div class="bg-red-100 text-red-800 px-4 py-2 rounded mb-4 shadow">
-                    {{ session('error') }}
-                </div>
-            @endif
+                    <?php echo e(session('error')); ?>
 
-            @yield('content')
+                </div>
+            <?php endif; ?>
+
+            <?php echo $__env->yieldContent('content'); ?>
         </main>
     </div>
 
     <!-- Footer -->
     <footer class="bg-teal-600 text-white text-center py-4 mt-auto">
-        <p>&copy; {{ date('Y') }} CampusLink. All rights reserved.</p>
+        <p>&copy; <?php echo e(date('Y')); ?> CampusLink. All rights reserved.</p>
     </footer>
 
 </body>
-</html>
+</html><?php /**PATH C:\xampp\htdocs\campus-link\resources\views/layouts/app.blade.php ENDPATH**/ ?>

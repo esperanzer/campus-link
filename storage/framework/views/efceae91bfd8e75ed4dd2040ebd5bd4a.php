@@ -1,8 +1,6 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', 'Dashboard'); ?>
 
-@section('title', 'Dashboard')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="p-6 bg-gray-100 min-h-screen">
     <h1 class="text-3xl font-bold mb-6 text-gray-800">Dashboard</h1>
 
@@ -15,7 +13,8 @@
                 <p class="mt-2 text-gray-500">Total registered students</p>
             </div>
             <div class="mt-4 text-3xl font-bold text-teal-600">
-                {{ \App\Models\Student::count() }}
+                <?php echo e(\App\Models\Student::count()); ?>
+
             </div>
         </div>
 
@@ -26,7 +25,7 @@
                 <p class="mt-2 text-gray-500">Total courses available</p>
             </div>
             <div class="mt-4 text-3xl font-bold text-teal-600">
-                12 {{-- Replace with dynamic count if you have a Course model --}}
+                12 
             </div>
         </div>
 
@@ -37,9 +36,11 @@
                 <p class="mt-2 text-gray-500">Total lecturers</p>
             </div>
             <div class="mt-4 text-3xl font-bold text-teal-600">
-                5 {{-- Replace with dynamic count if you have a Lecturer model --}}
+                5 
             </div>
         </div>
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\xampp\htdocs\campus-link\resources\views/dashboard.blade.php ENDPATH**/ ?>
